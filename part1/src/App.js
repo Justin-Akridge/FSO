@@ -114,19 +114,18 @@ const App = () => {
     const [word, setWord] = useState('')
    
     const hello = (name) => {
-        const handle = () => {
+        return () => {
             if (word === "") {
                 setWord(name)
             } else {
                 setWord("")
             }
         }
-        return handle
     }
+    
     return (
         <>
             {left}
-
             <Button handleClick={handleLeftClick} text='Left' />
             <Button handleClick={handleRightClick} text='Right' />
             {right}
