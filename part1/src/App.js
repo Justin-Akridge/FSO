@@ -12,7 +12,10 @@ const StatisticLine = (props) => {
   const {value, text} = props
   if (text === "positive") {
     return (
-      <p>{text} {value}%</p>
+      <tr>
+        <th>{text} </th>
+        <td>{value}%</td>
+      </tr>
     )
   } else if (text === "statistics") {
     return (
@@ -20,10 +23,15 @@ const StatisticLine = (props) => {
     )
   } else {
     return (
-      <p>{text} {value}</p>
+      <tr>
+        <th>{text} </th>
+        <td>{value}</td>
+      </tr>
+    
     )
   }
 }
+
 const Statistics = (props) => {
   const {title, good, neutral, bad, total} = props
   if (total === 0) {
@@ -34,12 +42,16 @@ const Statistics = (props) => {
     return (
       <>
         <StatisticLine text="statistics" />
-        <StatisticLine text="good" value={good} />
-        <StatisticLine text="neutral" value={neutral} />
-        <StatisticLine text="bad" value={bad} />
-        <StatisticLine text="all" value={total} />
-        <StatisticLine text="average" value={good / total} />
-        <StatisticLine text="positive" value={(good / total) * 100} />
+        <table>
+          <tbody>
+            <StatisticLine text="good" value={good} />
+            <StatisticLine text="neutral" value={neutral} />
+            <StatisticLine text="bad" value={bad} />
+            <StatisticLine text="all" value={total} />
+            <StatisticLine text="average" value={good / total} />
+            <StatisticLine text="positive" value={(good / total) * 100} />
+          </tbody>
+        </table>
       </>
     )
   }
@@ -77,6 +89,7 @@ const App = () => {
       <Button handleSubmit={handleNeutral} text="neutral" />
       <Button handleSubmit={handleBad} text="bad"/>
       <Statistics title="statistics" good={good} neutral={neutral} bad={bad} total={total} />
+      
     </>
   )
 }
