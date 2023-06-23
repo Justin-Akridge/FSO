@@ -3,14 +3,12 @@ const Course = ({ course, parts }) => {
 
     return (
         <>
-            <h2>{course}</h2> 
-            <ul>
+            <h3>{course}</h3> 
                 {parts.map(part => {
                     return (
-                        <li key={part.id}>{part.name} {part.exercises}</li>
+                        <p key={part.id}>{part.name} {part.exercises}</p>
                     )
                 })}
-            </ul>
             <h4>Total number of exercises {total}</h4>
         </>
     )
