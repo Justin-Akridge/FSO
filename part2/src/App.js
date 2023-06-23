@@ -1,9 +1,9 @@
 const Course = ({ course, parts }) => {
-    const total = parts.reduce((s, p) => (s + p.exercises)) 
+    const total = parts.reduce((s, p) => (s + p.exercises), 0) 
 
     return (
         <>
-            <h1>{course}</h1> 
+            <h2>{course}</h2> 
             <ul>
                 {parts.map(part => {
                     return (
@@ -64,6 +64,7 @@ const App = () => {
   
     return (
         <>
+            <h1>Web development curriculum</h1>
             {courses.map(course => {
                 return (
                     <Course key={course.id} course={course.name} parts={course.parts} />
