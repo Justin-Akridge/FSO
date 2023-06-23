@@ -1,116 +1,87 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Header = ({ course }) => {
-    return (
-        <h1>{course}</h1>
-    )
+
+
+const Button = (props) => {
+  return (
+    <button onClick={props.handleSubmit}>{props.text}</button>
+  )
 }
 
-const Content = ({ parts }) => {
+const StatisticLine = (props) => {
+  const {value, text} = props
+  if (text === "positive") {
     return (
-        <>
-            {/* <ul>
-                {parts.map(part => {
-                    <li>{part.name}</li>
-                })}
-            </ul> */}
-            <ul>
-                <li>{parts[0].name}</li>
-                <li>{parts[1].name}</li>
-                <li>{parts[2].name}</li>
-            </ul> 
-        </>
+      <tr>
+        <th>{text} </th>
+        <td>{value}%</td>
+      </tr>
     )
+  } else if (text === "statistics") {
+    return (
+      <h1>{props.text}</h1>
+    )
+  } else {
+    return (
+      <tr>
+        <th>{text} </th>
+        <td>{value}</td>
+      </tr>
+    
+    )
+  }
 }
 
-const Total = ({ parts }) => {
-    let total = 0;
-    parts.map(part => total += part.exercises)    
+const Statistics = (props) => {
+  const {title, good, neutral, bad, total} = props
+  if (total === 0) {
     return (
-        <div>{total}</div>
+      <h4>No feedback given</h4>
     )
-}
-
-const Class = () => {
-    const course = {
-        name: 'Half Stack application development',
-        parts: [
-            {
-                name: 'Fundamentals of React',
-                exercises: 10
-            },
-            {
-                name: 'Using props to pass data',
-                exercises: 7
-            },
-            {
-                name: 'State of a component',
-                exercises: 14
-            },
-        ]
-    }
-  
+  } else {
     return (
-        <div>
-            <Header course={course.name} />
-            <Content parts={course.parts} />
-            <Total parts={course.parts} />
-        </div>
+      <>
+        <StatisticLine text="statistics" />
+        <table>
+          <tbody>
+            <StatisticLine text="good" value={good} />
+            <StatisticLine text="neutral" value={neutral} />
+            <StatisticLine text="bad" value={bad} />
+            <StatisticLine text="all" value={total} />
+            <StatisticLine text="average" value={good / total} />
+            <StatisticLine text="positive" value={(good / total) * 100} />
+          </tbody>
+        </table>
+      </>
     )
-}
-
-const Hello = ({ name, age }) => {
-
-    const bornYear = () => new Date().getFullYear() - age;
-
-    return (
-        <div>
-            <p>
-                Hello {name}, you are {age} years old
-                Your age is probably {bornYear()}
-            </p>
-        </div>
-    )
-}
-  
-const Display = ({count}) => <div>{count}</div>
-
-const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
-const History = (props) => {
-    if (props.allClicks.length === 0) {
-        return (
-            <div>
-                The app is used by pressing buttons
-            </div>
-        )
-    }
-    return (
-        <div>
-            button press history: {props.allClicks.join(' ')}
-        </div>
-    )
+  }
 }
 
 const App = () => {
-    const [right, setRight] = useState(0)
-    const [left, setLeft] = useState(0)
-    const [allClicks, setAll] = useState([])
-    const [total, setTotal] = useState(0)
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  const [total, setTotal] = useState(0)
+  const handleGood = () => {
+    const update = good + 1
+    setGood(update)
+    setTotal(total + 1)
+  }
 
-    const handleLeftClick = () => {
-        setAll(allClicks.concat('L'))
-        const updateleft = left + 1
-        setLeft(updateleft)
-        setTotal(updateleft + right)
-    }
+  const handleNeutral = () => {
+    const update = neutral + 1
+    setNeutral(update)
+    setTotal(total + 1)
+  }
 
-    const handleRightClick = () => {
-        setAll(allClicks.concat('R'))
-        const updateright = right + 1
-        setRight(updateright)
-        setTotal(left + updateright)
-    }
+  const handleBad = () => {
+    const update = bad + 1
+    setBad(update)
+    setTotal(total + 1)
+  }
 
+<<<<<<< HEAD
     const [word, setWord] = useState('')
    
     const hello = (name) => {
@@ -135,5 +106,49 @@ const App = () => {
             <Button handleClick={hello("justin")} text='word' />
         </>
     )
+=======
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
+
+  const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+  console.log(votes)
+  const handleSelect = () => {
+    setSelected(Math.floor(Math.random() * anecdotes.length))
+  }
+
+  const handleVotes = () => {
+    const arr = [...votes]
+    arr[selected] += 1
+    setVotes(arr)
+  }
+
+  return (
+    <>
+      <h1>give feedback</h1>
+      <Button handleSubmit={handleGood} text="good" />
+      <Button handleSubmit={handleNeutral} text="neutral" />
+      <Button handleSubmit={handleBad} text="bad"/>
+      <Statistics title="statistics" good={good} neutral={neutral} bad={bad} total={total} />
+      
+      <h1>Anecedote of the day</h1> 
+      <p>{anecdotes[selected]} has {votes[selected]} votes</p>
+      <button onClick={handleVotes}>Vote</button>
+      <button onClick={handleSelect}>Next Quote</button>
+
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[votes.indexOf(Math.max(...votes))]} has {Math.max(...votes)} votes.</p>
+    </>
+  )
+>>>>>>> c9f82d89e6657f53061125f4f0eac65f955e19a8
 }
+
 export default App
