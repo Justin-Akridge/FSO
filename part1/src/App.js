@@ -1,140 +1,84 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Header = ({ course }) => {
-    return (
-        <h1>{course}</h1>
-    )
+
+
+const Button = (props) => {
+  return (
+    <button onClick={props.handleSubmit}>{props.text}</button>
+  )
 }
 
-const Content = ({ parts }) => {
+const StatisticLine = (props) => {
+  const {value, text} = props
+  if (text === "positive") {
     return (
-        <>
-            {/* <ul>
-                {parts.map(part => {
-                    <li>{part.name}</li>
-                })}
-            </ul> */}
-            <ul>
-                <li>{parts[0].name}</li>
-                <li>{parts[1].name}</li>
-                <li>{parts[2].name}</li>
-            </ul> 
-        </>
+      <p>{text} {value}%</p>
     )
+  } else if (text === "statistics") {
+    return (
+      <h1>{props.text}</h1>
+    )
+  } else {
+    return (
+      <p>{text} {value}</p>
+    )
+  }
 }
-
-const Total = ({ parts }) => {
-    let total = 0;
-    parts.map(part => total += part.exercises)    
+const Statistics = (props) => {
+  const {title, good, neutral, bad, total} = props
+  if (total === 0) {
     return (
-        <div>{total}</div>
+      <h4>No feedback given</h4>
     )
-}
-
-const Class = () => {
-    const course = {
-        name: 'Half Stack application development',
-        parts: [
-            {
-                name: 'Fundamentals of React',
-                exercises: 10
-            },
-            {
-                name: 'Using props to pass data',
-                exercises: 7
-            },
-            {
-                name: 'State of a component',
-                exercises: 14
-            },
-        ]
-    }
-  
+  } else {
     return (
-        <div>
-            <Header course={course.name} />
-            <Content parts={course.parts} />
-            <Total parts={course.parts} />
-        </div>
+      <>
+        <StatisticLine text="statistics" />
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={total} />
+        <StatisticLine text="average" value={good / total} />
+        <StatisticLine text="positive" value={(good / total) * 100} />
+      </>
     )
-}
-
-const Hello = ({ name, age }) => {
-
-    const bornYear = () => new Date().getFullYear() - age;
-
-    return (
-        <div>
-            <p>
-                Hello {name}, you are {age} years old
-                Your age is probably {bornYear()}
-            </p>
-        </div>
-    )
-}
-  
-const Display = ({count}) => <div>{count}</div>
-
-const Button = ({handleClick, text}) => <button onClick={handleClick}>{text}</button>
-const History = (props) => {
-    if (props.allClicks.length === 0) {
-        return (
-            <div>
-                The app is used by pressing buttons
-            </div>
-        )
-    }
-    return (
-        <div>
-            button press history: {props.allClicks.join(' ')}
-        </div>
-    )
+  }
 }
 
 const App = () => {
-    const [right, setRight] = useState(0)
-    const [left, setLeft] = useState(0)
-    const [allClicks, setAll] = useState([])
-    const [total, setTotal] = useState(0)
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  const [total, setTotal] = useState(0)
 
-    const handleLeftClick = () => {
-        setAll(allClicks.concat('L'))
-        const updateleft = left + 1
-        setLeft(updateleft)
-        setTotal(updateleft + right)
-    }
+  const handleGood = () => {
+    const update = good + 1
+    setGood(update)
+    setTotal(total + 1)
+  }
 
-    const handleRightClick = () => {
-        setAll(allClicks.concat('R'))
-        const updateright = right + 1
-        setRight(updateright)
-        setTotal(left + updateright)
-    }
+  const handleNeutral = () => {
+    const update = neutral + 1
+    setNeutral(update)
+    setTotal(total + 1)
+  }
 
-    const [word, setWord] = useState('')
-   
-    const hello = (name) => {
-        const handle = () => {
-            if (word === "") {
-                setWord(name)
-            } else {
-                setWord("")
-            }
-        }
-        return handle
-    }
-    return (
-        <>
-            {left}
+  const handleBad = () => {
+    const update = bad + 1
+    setBad(update)
+    setTotal(total + 1)
+  }
 
-            <Button handleClick={handleLeftClick} text='Left' />
-            <Button handleClick={handleRightClick} text='Right' />
-            {right}
-            <History allClicks={allClicks} />
-            <p>total {total}</p>
-            <p>{word}</p>
-            <Button handleClick={hello("justin")} text='word' />
-        </>
-    )
+  return (
+    <>
+      <h1>give feedback</h1>
+      <Button handleSubmit={handleGood} text="good" />
+      <Button handleSubmit={handleNeutral} text="neutral" />
+      <Button handleSubmit={handleBad} text="bad"/>
+      <Statistics title="statistics" good={good} neutral={neutral} bad={bad} total={total} />
+    </>
+  )
 }
+
 export default App
