@@ -81,6 +81,32 @@ const App = () => {
     setTotal(total + 1)
   }
 
+<<<<<<< HEAD
+    const [word, setWord] = useState('')
+   
+    const hello = (name) => {
+        return () => {
+            if (word === "") {
+                setWord(name)
+            } else {
+                setWord("")
+            }
+        }
+    }
+    
+    return (
+        <>
+            {left}
+            <Button handleClick={handleLeftClick} text='Left' />
+            <Button handleClick={handleRightClick} text='Right' />
+            {right}
+            <History allClicks={allClicks} />
+            <p>total {total}</p>
+            <p>{word}</p>
+            <Button handleClick={hello("justin")} text='word' />
+        </>
+    )
+=======
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -122,6 +148,7 @@ const App = () => {
       <p>{anecdotes[votes.indexOf(Math.max(...votes))]} has {Math.max(...votes)} votes.</p>
     </>
   )
+>>>>>>> c9f82d89e6657f53061125f4f0eac65f955e19a8
 }
 
 export default App
